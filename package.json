@@ -19,9 +19,9 @@
     "url": "https://github.com/smartlyio/oats.git"
   },
   "peerDependencies": {
+    "@smartlyio/oats-runtime": "^2.5.0",
     "axios": "^0.19.0",
-    "typescript": "^3.6.3",
-    "@smartlyio/oats-runtime": "^2.4.0"
+    "typescript": "^3.6.3"
   },
   "dependencies": {
     "@types/form-data": "^2.2.1",
@@ -37,7 +37,7 @@
     "client"
   ],
   "devDependencies": {
-    "@smartlyio/oats-runtime": "^2.4.0",
+    "@smartlyio/oats-runtime": "2.5.0",
     "@types/node": "^11.11.3",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
