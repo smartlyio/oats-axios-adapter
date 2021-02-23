@@ -1,7 +1,7 @@
 import * as runtime from '@smartlyio/oats-runtime';
 import * as FormData from 'form-data';
 import * as assert from 'assert';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 function toRequestData(data: runtime.server.RequestBody<any> | undefined) {
   if (data == null) {
@@ -33,7 +33,8 @@ function axiosToJson(data: any) {
 }
 
 export const bind: runtime.client.ClientAdapter = async (
-  arg: runtime.server.EndpointArg<any, any, any, any>
+  arg: runtime.server.EndpointArg<any, any, any, any>,
+  client?: AxiosInstance
 ): Promise<runtime.server.Response<any, any, any, Record<string, any>>> => {
   if (arg.servers.length !== 1) {
     return assert.fail('cannot decide which server to use from ' + arg.servers.join(', '));
@@ -43,7 +44,8 @@ export const bind: runtime.client.ClientAdapter = async (
   const data = toRequestData(arg.body);
   const url = server + arg.path;
   const headers = { ...arg.headers, ...(data instanceof FormData ? data.getHeaders() : {}) };
-  const response = await axios.request({
+  const axiosClient = client ? client : axios;
+  const response = await axiosClient.request({
     method: arg.method,
     headers,
     url,
