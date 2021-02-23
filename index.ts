@@ -77,7 +77,6 @@ export const bind: runtime.client.ClientAdapter = async (
   const data = toRequestData(arg.body);
   const url = server + arg.path;
   const headers = { ...arg.headers, ...(data instanceof FormData ? data.getHeaders() : {}) };
-
   const response = await axios.request({
     method: arg.method,
     headers,
