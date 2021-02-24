@@ -1,7 +1,7 @@
 import * as runtime from '@smartlyio/oats-runtime';
 import * as FormData from 'form-data';
 import * as assert from 'assert';
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import globalAxios, { AxiosInstance, AxiosResponse } from 'axios';
 
 function toRequestData(data: runtime.server.RequestBody<any> | undefined) {
   if (data == null) {
@@ -32,9 +32,9 @@ function axiosToJson(data: any) {
   return data;
 }
 
-export const bind: runtime.client.ClientAdapter = withAxios(axios);
+export const bind: runtime.client.ClientAdapter = withAxios(globalAxios);
 
-export function withAxios(client: AxiosInstance): runtime.client.ClientAdapter {
+export function withAxios(axiosInstance: AxiosInstance): runtime.client.ClientAdapter {
   return async (
     arg: runtime.server.EndpointArg<any, any, any, any>
   ): Promise<runtime.server.Response<any, any, any, Record<string, any>>> => {
@@ -46,7 +46,7 @@ export function withAxios(client: AxiosInstance): runtime.client.ClientAdapter {
     const data = toRequestData(arg.body);
     const url = server + arg.path;
     const headers = { ...arg.headers, ...(data instanceof FormData ? data.getHeaders() : {}) };
-    const response = await axios.request({
+    const response = await axiosInstance.request({
       method: arg.method,
       headers,
       url,
